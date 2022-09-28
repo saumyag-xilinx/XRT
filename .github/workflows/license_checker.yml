@@ -5,7 +5,7 @@ name: Check License Lines
 on:
   push:
     paths:
-      - '**.'
+      - '**.yml'
 jobs:
   check-license-lines:
     runs-on: ubuntu-latest
