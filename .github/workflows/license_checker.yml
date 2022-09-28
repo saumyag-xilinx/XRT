@@ -1,20 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (C) 2019-2021 Xilinx, Inc. All rights reserved.
 
-name: License Checking
-on:     
+name: Check License Lines
+on:
   push:
-
 jobs:
-  license_check:
+  check-license-lines:
     runs-on: ubuntu-latest
     steps:
-    - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v31
-    - name: List all changed files
-        uses: kt3k/license_checker@v1.0.6
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            license_checker
-          done
+    - uses: actions/checkout@master
+    - name: Check License Lines
+      uses: kt3k/license_checker@v1.0.6
