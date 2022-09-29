@@ -16,7 +16,7 @@ jobs:
     - name: Check License for changed files
       run: |
         for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-          deno run --unstable --allow-read --prompt https://deno.land/x/license_checker@v3.2.0/main.ts
+          npm install -g @kt3k/license-checker
           echo $file
           license_checker
         done
