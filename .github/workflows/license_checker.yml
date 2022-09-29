@@ -3,12 +3,11 @@ name: Check License Lines
 on:
   push:
     paths:
-      - '**'
+      - './'
 jobs:
   check-license-lines:
     runs-on: ubuntu-latest
     steps:    
     - uses: actions/checkout@master
     - name: Check License Lines
-    - uses: ./
-    - uses: kt3k/license_checker@v1.0.6
+      uses: kt3k/license_checker@v1.0.6
