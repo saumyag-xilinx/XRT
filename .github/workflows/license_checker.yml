@@ -5,14 +5,17 @@ on:
 jobs:
   check-license-lines:
     runs-on: ubuntu-latest
-    steps:    
-    - uses: actions/checkout@master
-    - name: Check License Lines
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v19
+    - name: Check License for changed files
       run: |
-        URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
-        FILES=$(curl -s -X GET -G $URL)
-        for f in ${FILES[*]}; do
-          echo "checking $f ..."
-          #git submodule file is coming as null here, so skip further checks for this type of files
-          if [ $f == null ]; then
-            continue;
+        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          echo $file
+          fi
+        done
