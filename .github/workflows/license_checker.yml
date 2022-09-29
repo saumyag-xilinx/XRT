@@ -15,8 +15,7 @@ jobs:
       uses: tj-actions/changed-files@v19
     - name: Check License for changed files
       run: |
+        npm install -g @kt3k/license-checker
         for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-          npm install -g @kt3k/license-checker
-          echo $file
           license_checker
         done
