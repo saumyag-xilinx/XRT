@@ -3,7 +3,7 @@ name: Check License Lines
 on:
   push:
     paths:
-      - './'
+      - '**/*.*'
 jobs:
   check-license-lines:
     runs-on: ubuntu-latest
