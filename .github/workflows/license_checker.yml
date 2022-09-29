@@ -8,14 +8,10 @@ jobs:
     steps:
     - name: Checkout branch
       uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
     - name: Get changed files
       id: changed-files
       uses: tj-actions/changed-files@v19
     - name: Check License for changed files
-      run: |
-        npm install -g @kt3k/license-checker
-        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-          license_checker
-        done
+      uses: kt3k/license_checker@v1.0.6
+      with:
+        files: steps.changed-files.outputs.all_changed_files
