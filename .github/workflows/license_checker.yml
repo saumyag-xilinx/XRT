@@ -1,4 +1,3 @@
-
 name: Check License Lines
 on:
   push:
