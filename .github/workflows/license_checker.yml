@@ -21,7 +21,7 @@ jobs:
            echo "checking $f....."
            out=$(grep -rli "SPDX" $f)
            echo "output is $out..."
-           if $out==NULL
+           if [$out==NULL]; then
               echo "Hi"
            else 
               echo "Bye"
