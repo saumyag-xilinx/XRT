@@ -18,7 +18,7 @@ jobs:
         FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
         for f in ${FILES[*]}; do
            echo "checking $f....."
-           if ! (curl -s -L -I $f | grep "SPDX"); then
+           if (grep -rLi "SPDX" $f); then
               echo "Hi"
            else 
               echo "Bye"
