@@ -18,7 +18,7 @@ jobs:
         FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
         for f in ${FILES[*]}; do
            echo "checking $f....."
-           fp= realpath($f))
+           fp= realpath($f)
            if grep -q $fp SPDX; then
               exit 1
            fi
