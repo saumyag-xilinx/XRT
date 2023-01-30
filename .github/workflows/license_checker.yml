@@ -19,7 +19,7 @@ jobs:
         for f in ${FILES[*]}; do
            echo "checking $f....."
            fp= realpath $f
-           if grep -Li $fp SPDX; then
+           if grep -i $fp SPDX; then
               exit 1
            fi
         done       
