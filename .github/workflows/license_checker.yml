@@ -21,8 +21,6 @@ jobs:
            fp= realpath $f
            echo "checking $fp..."
            if grep -Li "SPDX" $fp; then
-              continue;
-           else
               exit 1;
            fi
         done       
