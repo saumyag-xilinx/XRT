@@ -16,6 +16,7 @@ jobs:
       run: |
         URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
         FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
+        echo "checking $FILES"
         for f in ${FILES[*]}; do
            echo "checking $f....."
            if $(grep -rli "SPDX" $f); then
