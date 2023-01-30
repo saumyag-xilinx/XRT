@@ -1,0 +1,18 @@
+name: Check License Lines
+on:
+  pull_request:
+jobs:
+  check-license-lines:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v2
+    - name: Check License for changed files
+      run: |
+        URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
+        FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
+        if echo $FILES | grep -q ".json"; then
+          echo "json file changed!!"
+        else
+          echo "no json file changed!!"
+        fi
