@@ -19,7 +19,9 @@ jobs:
         echo "checking $FILES"
         for f in ${FILES[*]}; do
            echo "checking $f....."
-           if $(grep -rli "SPDX" $f); then
+           out=$(grep -rli "SPDX" $f)
+           echo "output is $out..."
+           if $out==NULL
               echo "Hi"
            else 
               echo "Bye"
