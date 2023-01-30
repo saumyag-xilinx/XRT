@@ -16,11 +16,9 @@ jobs:
       run: |
         URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
         FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename')
-        for b in ${FILES[*]}; do
-           echo "checking $b....."
-           fp= readlink -f $b
-           echo "checking $fp..."
-           if grep -i "SPDX" $fp; then
+        for f in ${FILES[*]}; do
+           echo "checking $f....."
+           if ! $(curl -s -L -I $f | grep "SPDX"); then
               echo "Hi"
            else 
               echo "Bye"
