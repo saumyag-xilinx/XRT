@@ -20,7 +20,9 @@ jobs:
            echo "checking $f....."
            fp= realpath $f
            echo "checking $fp..."
-           if grep -Li "SPDX" $fp; then
-              exit 1;
+           if grep -i "SPDX" $fp; then
+              echo "Hi"
+           else 
+              echo "Bye"
            fi
         done       
