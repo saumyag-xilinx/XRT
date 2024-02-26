@@ -244,8 +244,39 @@ zocl_cleanup_aie(struct drm_zocl_dev *zdev)
 	return 0;
 }
 
+int 
+zocl_read_aieresbin(struct drm_zocl_dev *zdev, const struct axlf *axlf,enum axlf_section_kind kind)
+{
+	struct axlf_section_header *header = NULL;
+	char *xclbin = (char *)axlf;
+	struct aie_res_bin *aie = zdev->res_info;
+
+	header = xrt_xclbin_get_section_hdr_next(axlf, kind, header);
+	while (header) {
+		struct aie_resource_bin *aie_p =
+		    (struct aie_resources_bin *)&xclbin[header->m_sectionOffset];
+		aie->start_col = aie_p->m_start_column;
+		aie->num_col = aie_p->m_num_columns;
+       		char *data_portion = (char *)aie_p + aie_p->m_image_offset; 	
+		size_t data_size = aie_p->m_image_size;
+        
+        	void *aie_res = malloc(data_size);
+        	if (aie_res == NULL) {
+            		return -1;
+        	}
+        	memcpy(aie_res, data_portion, data_size);
+		aie->data = aie_res;
+
+		//Call the AIE Driver API 
+		to_be_received(aie->start_col, aie->num_col, aie_res);
+
+        	header = xrt_xclbin_get_section_hdr_next(axlf, kind, header);
+	}
+	return 0;
+}
+
 int
-zocl_create_aie(struct drm_zocl_dev *zdev, struct axlf *axlf, void *aie_res, uint8_t hw_gen)
+zocl_create_aie(struct drm_zocl_dev *zdev, struct axlf *axlf, void *aie_res, uint8_t hw_gen, uint32_t part_id)
 {
 	uint64_t offset;
 	uint64_t size;
@@ -295,6 +326,17 @@ zocl_create_aie(struct drm_zocl_dev *zdev, struct axlf *axlf, void *aie_res, uin
 			goto done;
 		}
 	}
+
+//***************************************************************************************
+	
+	req.partition_id = part_id;
+	if (!aie_res){
+		zdev->res_info = vmalloc(num_elements * sizeof(struct aie_res_bin));
+		int res = zocl_read_aieresbin(zdev, axlf, AIE_RESOURCES_BIN);               //ask where to free zdev->res_info
+	}
+	else 
+		req.metadata = (u64)aie_res;
+//**************************************************************************************
 
 	/* TODO figure out the partition id and uid from xclbin or PDI */
 	req.partition_id = 1;

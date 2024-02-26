@@ -122,6 +122,12 @@ struct aie_metadata {
 	void *data;
 };
 
+struct aie_res_bin {
+	uint32_t start_col;
+	uint32_t num_col;
+	void *data;
+};
+
 struct drm_zocl_slot {
 	u32			 slot_idx;
 	u32			 slot_type;
@@ -176,6 +182,8 @@ struct drm_zocl_dev {
 	struct zocl_cu_subdev	 cu_subdev;
 	struct platform_device	*cu_intc;
 	struct kds_sched	 kds;
+
+	struct aie_res_bin 	*res_info;
 
 	/*
 	 * This RW lock is to protect the sysfs nodes exported

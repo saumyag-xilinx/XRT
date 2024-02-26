@@ -850,6 +850,31 @@ get_softkernels(const axlf* top)
   return sks;
 }
 
+std::vector<aieresourcesbin_object>
+get_aieresourcesbin(const axlf* top)
+{
+  std::vector<aieresourcesbin_object> vec;
+  const axlf_section_header *pSection = nullptr;
+
+  for (pSection = ::xclbin::get_axlf_section(top, AIE_RESOURCES_BIN);
+    pSection != nullptr;
+    pSection = ::xclbin::get_axlf_section_next(top, pSection, AIE_RESOURCES_BIN)) {
+      auto begin = reinterpret_cast<const char*>(top) + pSection->m_sectionOffset;
+      auto aieres = reinterpret_cast<const aie_resources_bin*>(begin);
+
+      aieresourcesbin_object obj;
+      obj.mpo_name = std::string(begin + aieres->mpo_name);
+      obj.mpo_version = std::string(begin + aieres->mpo_version);
+      obj.start_col = aieres->m_start_column;
+      obj.num_col = aieres->m_num_columns;
+      obj.size = aieres->m_image_size;
+      obj.ar_buf = const_cast<char*>(begin + aieres->m_image_offset);  // NOLINT
+      vec.emplace_back(std::move(obj));
+  }
+
+  return vec;
+}
+
 aie_partition_obj
 get_aie_partition(const axlf* top)
 {
