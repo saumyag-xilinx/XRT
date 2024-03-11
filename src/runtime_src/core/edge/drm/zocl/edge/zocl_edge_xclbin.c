@@ -215,6 +215,7 @@ zocl_xclbin_read_axlf(struct drm_zocl_dev *zdev, struct drm_zocl_axlf *axlf_obj,
 	int slot_id = 0;
 	uint32_t qos = 0;
 	uint8_t hw_gen = axlf_obj->hw_gen;
+	uint32_t part_id = axlf_obj->partition_id;
 
 	/* Download the XCLBIN from user space to kernel space and validate */
 	if (copy_from_user(&axlf_head, axlf_obj->za_xclbin_ptr,
@@ -403,7 +404,7 @@ zocl_xclbin_read_axlf(struct drm_zocl_dev *zdev, struct drm_zocl_axlf *axlf_obj,
 	zocl_init_mem(zdev, slot);
 
 	/* Createing AIE Partition */
-	zocl_create_aie(zdev, axlf, aie_res, hw_gen);
+	zocl_create_aie(zdev, axlf, aie_res, hw_gen, part_id);
 
 	/*
 	 * Remember xclbin_uuid for opencontext.

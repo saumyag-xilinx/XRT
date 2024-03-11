@@ -304,6 +304,7 @@ zocl_xclbin_load_pskernel(struct drm_zocl_dev *zdev, void *data, uint32_t slot_i
 	void *aie_res = 0;
 	struct device_node *aienode = NULL;
 	uint8_t hw_gen = 1;
+	uint32_t part_id = 1;
 	struct aie_metadata      aie_data = { 0 };
 	uint64_t size = 0;
 
@@ -369,7 +370,7 @@ zocl_xclbin_load_pskernel(struct drm_zocl_dev *zdev, void *data, uint32_t slot_i
 	// Cache full xclbin
 	//last argument represents aie generation. 1. aie, 2. aie-ml ...
 	DRM_INFO("AIE Device set to gen %d", hw_gen);
-	zocl_create_aie(zdev, axlf, aie_res, hw_gen);
+	zocl_create_aie(zdev, axlf, aie_res, hw_gen, part_id);
 
 
 	ret = zocl_kernel_cache_xclbin(zdev, slot, axlf);
